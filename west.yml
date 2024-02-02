@@ -23,6 +23,8 @@ manifest:
       url-base: https://github.com/zephyrproject-rtos
     - name: babblesim
       url-base: https://github.com/BabbleSim
+    - name: pamolloy
+      url-base: https://github.com/pamolloy
 
   group-filter: [-babblesim, -optional]
 
@@ -257,6 +259,10 @@ manifest:
       repo-path: hostap
       path: modules/lib/hostap
       revision: dee924caf7218d0ee2c2698c217559b1292a46d0
+    - name: libiio
+      remote: pamolloy
+      path: modules/lib/libiio
+      revision: 9693aff71fb80f141d01f64208e68b27f511ee41
     - name: libmetal
       revision: 243eed541b9c211a2ce8841c788e62ddce84425e
       path: modules/hal/libmetal
