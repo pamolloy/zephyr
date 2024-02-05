@@ -1,0 +1,6 @@
+sample:
+  name: iiod sample
+  description: Industrial I/O daemon
+common:
+  modules:
+    - libiio
