@@ -1,0 +1,12 @@
+# Copyright (c) 2024 Analog Devices, Inc.
+# Copyright (c) 2024 BayLibre, SAS
+# SPDX-License-Identifier: Apache-2.0
+
+config ZEPHYR_LIBIIO_MODULE
+	bool
+
+config LIBIIO
+	bool "libiio Support"
+	depends on ZEPHYR_LIBIIO_MODULE
+	help
+	  This option enables the IIO library
