@@ -32,6 +32,11 @@ option(WITH_ZSTD OFF)
 # For compatibility with older versions of CMake, option is clearing the normal variable 'NO_THREADS'.
 set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 
+# TODO(PM): `clock_gettime() implicitly defined` and temporarily fixed by
+# including `<zephyr/posix/time.h>` and passing `.../zephyr/include` to
+# `gcc -I`
+# See https://github.com/zephyrproject-rtos/zephyr/issues/28124
+
 add_subdirectory(${ZEPHYR_CURRENT_MODULE_DIR} build)
 
 endif()
