@@ -39,4 +39,11 @@ set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 
 add_subdirectory(${ZEPHYR_CURRENT_MODULE_DIR} build)
 
+# TODO(PM): These appear to be the standard way to include a library, but in
+# this case we don't want to list all the files explicitly. We should be able
+# to use the `add_library()` in libiio/CMakeLists.txt
+#zephyr_library_named(iio)
+#zephyr_include_directories()
+#zephyr_library_sources()
+
 endif()
