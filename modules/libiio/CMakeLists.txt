@@ -29,6 +29,9 @@ option(WITH_UTILS OFF)
 option(WITH_XML_BACKEND OFF)
 option(WITH_ZSTD OFF)
 
+# For compatibility with older versions of CMake, option is clearing the normal variable 'NO_THREADS'.
+set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
+
 add_subdirectory(${ZEPHYR_CURRENT_MODULE_DIR} build)
 
 endif()
