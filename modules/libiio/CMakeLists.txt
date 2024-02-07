@@ -37,7 +37,13 @@ set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 # `gcc -I`
 # See https://github.com/zephyrproject-rtos/zephyr/issues/28124
 
+# Copied from macro(zephyr_library_named name), but using add_subdirectory()
+# rather than add_library() since libiio/CMakeLists.txt already calls
+# add_library()
+set(ZEPHYR_CURRENT_LIBRARY iio)
 add_subdirectory(${ZEPHYR_CURRENT_MODULE_DIR} build)
+zephyr_append_cmake_library(iio)
+target_link_libraries(iio PUBLIC zephyr_interface)
 
 # TODO(PM): These appear to be the standard way to include a library, but in
 # this case we don't want to list all the files explicitly. We should be able
