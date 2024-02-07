@@ -44,6 +44,8 @@ set(ZEPHYR_CURRENT_LIBRARY iio)
 add_subdirectory(${ZEPHYR_CURRENT_MODULE_DIR} build)
 zephyr_append_cmake_library(iio)
 target_link_libraries(iio PUBLIC zephyr_interface)
+target_include_directories(zephyr_interface INTERFACE
+	${ZEPHYR_CURRENT_MODULE_DIR}/include)
 
 # TODO(PM): These appear to be the standard way to include a library, but in
 # this case we don't want to list all the files explicitly. We should be able
