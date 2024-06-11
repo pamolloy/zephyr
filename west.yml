@@ -262,7 +262,7 @@ manifest:
     - name: libiio
       remote: pamolloy
       path: modules/lib/libiio
-      revision: 9693aff71fb80f141d01f64208e68b27f511ee41
+      revision: 73c9128714b12dab615dda852223c90a426467fd
     - name: libmetal
       revision: 243eed541b9c211a2ce8841c788e62ddce84425e
       path: modules/hal/libmetal
