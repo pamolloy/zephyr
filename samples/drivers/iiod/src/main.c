@@ -6,12 +6,16 @@
  */
 
 #include <zephyr/sys/printk.h>
+#include <zephyr/drivers/uart.h>
 
 #include <time.h>
 #include <string.h>
 
 #include <iio/iio.h>
 #include <iio/iio-backend.h>
+#include <tinyiiod.h>
+
+#define UART_DEVICE_NODE DT_CHOSEN(zephyr_shell_uart)
 
 /*
  * iio_create_context():iio.h
@@ -121,13 +125,64 @@ const struct iio_backend iio_zephyr_backend = {
 	.default_timeout_ms = 1000,
 };
 
+ssize_t zephyr_iiod_read(struct iiod_pdata *pdata, void *buf, size_t size)
+{
+	struct device *uart_dev = (struct device *)pdata;
+	size_t nbytes = 0;
+	char *head = buf;
+	char c;
+	int ret;
+
+	printk("zephyr_iiod_read()\n");
+	while (size > 0) {
+		ret = uart_poll_in(uart_dev, &c);
+		printk("uart_poll_in() -> %i\n", ret);
+		*head++ = c;
+		size--;
+		nbytes++;
+	}
+
+	return nbytes;
+}
+
+ssize_t zephyr_iiod_write(struct iiod_pdata *pdata, const void *buf,
+			  size_t size)
+{
+	struct device *uart_dev = (struct device *)pdata;
+	size_t i;
+    unsigned char *cbuf = buf;
+
+	printk("zephyr_iiod_write()\n");
+	for (i = 0; i < size; i++) {
+		// TODO(PM): Do not blindly cast
+		uart_poll_out(uart_dev, cbuf[i]);
+	}
+	return i;
+}
+
 int main(void)
 {
 	struct iio_context *ctx;
 	char *description = "Zephyr RTOS backend";
+	char *xml = NULL;
+	int ret = 0;
+
+	const struct device *uart_dev = DEVICE_DT_GET(UART_DEVICE_NODE);
+
+	if (!device_is_ready(uart_dev)) {
+		printk("device_is_ready(uart_dev) -> :-(");
+		return 0;
+	}
 
 	ctx = iio_context_create_from_backend(&iio_zephyr_backend, description);
 	printk("iio_create_context() -> %s\n", strerror(-iio_err(ctx)));
+
+	xml = iio_context_get_xml(ctx);
+	printk("iio_context_get_xml() -> %s\n", strerror(-iio_err(ctx)));
+
+	ret = iiod_interpreter(ctx, NULL, zephyr_iiod_read, zephyr_iiod_write,
+			       xml, strlen(xml));
+	printk("iio_interpreter() -> %i\n", ret);
 
 	iio_context_destroy(ctx);
 

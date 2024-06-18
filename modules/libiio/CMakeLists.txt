@@ -39,10 +39,16 @@ set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 # add_library()
 set(ZEPHYR_CURRENT_LIBRARY iio)
 add_subdirectory(${ZEPHYR_CURRENT_MODULE_DIR} build)
+
 zephyr_append_cmake_library(iio)
 target_link_libraries(iio PUBLIC zephyr_interface)
+
+zephyr_append_cmake_library(tinyiiod)
+target_link_libraries(tinyiiod PUBLIC zephyr_interface)
+
 target_include_directories(zephyr_interface INTERFACE
-	${ZEPHYR_CURRENT_MODULE_DIR}/include)
+	${ZEPHYR_CURRENT_MODULE_DIR}/include
+	${ZEPHYR_CURRENT_MODULE_DIR}/tinyiiod)
 
 # TODO(PM): These appear to be the standard way to include a library, but in
 # this case we don't want to list all the files explicitly. We should be able
